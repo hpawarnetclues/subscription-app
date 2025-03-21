@@ -20,5 +20,5 @@ urlpatterns = [
     path("aftercharge_active", views.aftercharge_active, name="aftercharge_active"),
     path("subscription-plan", views.subscription_plan, name="subscription_plan"),
     path("profile", views.profile_page, name="profile"),
-    path('accounts/ 3rdparty/ login/cancelled/', views.google_logincancel,name='socialaccount_login_cancelled')
+    path('accounts/ 3rdparty/ login/cancelled/', views.google_logincancel, name='socialaccount_login_cancelled')
 ]

@@ -12,7 +12,6 @@ import pytz
 import jwt
 from .decorator import is_authenticated_login
 from allauth.socialaccount.models import SocialAccount
-from django.contrib.auth import logout
 from django.contrib.auth import get_user_model
 from . import models
 from django.core.serializers import serialize

@@ -310,7 +310,7 @@ def updateplan_page(request):
     context = {"plans_detail": plans, "durations": plan_duration}
     if plans.start_date >= datetime.now().date():
         context["start_dateupdate"] = plans.start_date
-    buyer_have = models.buy_plan.objects.filter(plan_id=int(id),is_active=True)
+    buyer_have = models.buy_plan.objects.filter(plan_id=int(id), is_active=True)
     currplanduration = models.duration_master.objects.filter(
         id=plans.duration_id
     ).first()
