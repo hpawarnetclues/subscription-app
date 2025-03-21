@@ -1,0 +1,90 @@
+{% extends "templates\admin_pages\base.html" %}
+{% block title %}Create Subscription{% endblock title %}
+{% load static %}
+<!-- Coding by CodingNepal || www.codingnepalweb.com -->
+{% block content %}
+  <!--Create Plan form-->
+  <div class='createplanmain' id='createplan_form' style="display:block;">      
+  <div class="title">Create</div>
+  <input type="button" class="btn btn-success m-2" value="Back!" onclick="plan_master()"> 
+    <div class="content">
+      <form action="#" id='insertplan_form'>
+        <div class="user-details">
+          <div class="input-box">
+            <span class="details">Plan Name</span>
+            <input type="text" placeholder="Enter Plan Name" id="planname_text" onfocusout="textboxerror('planname_error','planname_text','Please Enter Name.')">
+            <lable id='planname_error' style="color:red;font-size:18px;display:none;"></lable>
+            
+          </div>
+          <div class="input-box">
+            <span class="details">No. Of Request</span>
+            <input type="text" placeholder="Enter No. of Request" id="planupdate_textrequest" oninput="validateNumberInput(event)" onfocusout="textboxerror('planrequest_error','planupdate_textrequest','Please Enter No. of Request.','check')">
+            <lable id='planrequest_error' style="color:red;font-size:18px;display:none;"></lable>
+          </div>
+          <div class="input-box">
+            <span class="details">After Per Request Charge</span>
+            <input type="text" placeholder="Enter Charge" id="plancharge_text" oninput="validateNumberInput(event)" onfocusout="textboxerror('plancharge_error','plancharge_text','Please Enter After Charge.','check')">
+            <lable id='plancharge_error' style="color:red;font-size:18px;display:none;"></lable>
+          </div>
+          <div class="input-box">
+            <span class="details">Price Of Plan</span>
+            <input type="text" placeholder="Enter Price Of Plan" id="planprice_text" oninput="validateNumberInput(event)" onfocusout="textboxerror('planprice_error','planprice_text','Please Enter Price.')">
+            <lable id='planprice_error' style="color:red;font-size:18px;display:none"></lable>
+          </div>
+
+          <div class="input-box">
+            <span class="details">Start Date</span>
+            <input type="date"  id="start_date" onfocus="showcalender('start_date')">
+            <lable id='planstartdate_error' style="color:red;font-size:18px;display:none"></lable>
+          </div>
+
+          <div class="input-box">
+            <span class="details">End Date</span>
+            <input type="date"  id="endd_date" onfocus="showcalender('endd_date')">
+            <lable id='plandate_error' style="color:red;font-size:18px;display:none"></lable>
+          </div>
+          
+          <div class="input-box">
+        <div class="gender-details">
+          <input type="checkbox" name="plan_check" id="plan_check" style="display:none;" onclick="textboxerror('planduration_error','planupdate_textrequest','I think you are confuse between unlimited plan or limited plan please clarify You have Select Unlimited Plan and also enter No.of Request or Charges.','both')">
+          
+          <span class="gender-title">Is Unlimited Access</span>
+          <div class="category">
+            <label for="plan_check">
+            <span class="dot one"></span>
+            <span class="gender user-select-none">For Unlimited</span>
+          </label>
+          </div>
+          <lable id='planduration_error' style="color:red;font-size:18px;display:none"></lable>
+        </div>
+      </div>
+        <div class="input-box">
+        <div class="select-box">
+          <span class="select-title" >Please Select Duration</span><br>
+          <select id='duration_plan' onchange="change_date()">
+            {%for i in durations%}
+            <option value="{{i.id}}">{{i.duration}}</option>
+            {%endfor%}
+          </select>
+        </div>
+        {%for i in durations%}
+        <input type="hidden" value="{{i.days}}" id="durationdays{{i.id}}"/>
+        {% endfor%}
+      </div>
+      </div>
+        <div class="button">
+          <input type="button" value="Create Now!" onclick="create_plan()">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+    <!-- JavaScript -->
+    <script src="{% static 'js/plans.js'%}"></script>
+    <script>
+        window.onload = function(){
+          daterestrict('create')
+          change_date()
+        }
+      </script>
+    {% endblock content %}

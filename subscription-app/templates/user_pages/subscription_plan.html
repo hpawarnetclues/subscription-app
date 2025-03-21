@@ -1,0 +1,43 @@
+{% extends "templates\base.html" %}
+{% block title %}Subscription Plans{% endblock title %}
+{% load static %}
+{% block content %}
+    <!--Plan display-->
+    <input type='hidden' value='{{json_plan}}' id='all_data'>
+    <input type='hidden' value='{{json_duration}}' id='duration_json'>
+    <div class="container mx-auto py-12" id='plan_displaydiv' style="display:block;">
+      {% if plans%}
+      <h2 class="text-3xl font-bold 
+              text-center text-blue-900 mb-6">
+          Take Plan
+      </h2>
+      {% else%}
+      <h2 style="color:red;" class="text-3xl font-bold 
+              text-center text-blue-900 mb-6" id="empty_plan_error">
+          Now We Don`t Have Any Active Subscription Plan.
+      </h2>
+      {% endif%}
+      {% if plans%}
+      <div class='d-flex justify-content-end'>
+        <input class="form-control m-2" type="text" id="serach_text" placeholder="Search" onkeyup='search()' aria-label="Search" style="width:18rem;">
+      </div>
+      {%endif%}
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id='plan_cards'>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center">
+    {% if plans %}
+    <a class="btn link link-primary" id="loademore" onclick="loadmore('more')">Load More..</a>
+    {% endif%}
+  </div>
+    <script src="{% static 'js/user_dashboard.js' %}"></script>
+    <script>
+      window.onload=function(){
+        display_div()
+        if (document.getElementById('loademore')){
+            loadmore()
+        }
+      }
+    </script>
+    {% endblock content %}

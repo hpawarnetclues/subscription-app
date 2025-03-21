@@ -1,0 +1,71 @@
+-- FUNCTION: public.apicall_data(integer, integer, integer, integer)
+
+-- DROP FUNCTION IF EXISTS public.apicall_data(integer, integer, integer, integer);
+
+CREATE OR REPLACE FUNCTION public.apicall_data(
+	userid integer DEFAULT NULL::integer,
+	planid integer DEFAULT NULL::integer,
+	pagenumber integer DEFAULT NULL::integer,
+	pagesize integer DEFAULT NULL::integer)
+    RETURNS TABLE(type character varying, endpoint character varying, code integer, requestbody character varying, responce_data character varying, created_at timestamp with time zone, fullname character varying, planname character varying) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+BEGIN
+    RETURN QUERY 
+SELECT
+        e.type,
+		e.endpoint,
+		e.code,
+		e.requestbody,
+		e.responce_data,
+		e.created_at,
+		u.fullname,
+		f.plan_name
+    FROM
+        apicall_data e 
+		inner join user_master u on e.user_id=u.id 
+		inner join plan_master f on e.plan_id=f.id
+		where (userid IS NULL OR e.user_id=userid) AND
+		(planid IS NULL OR e.plan_id=planid)
+		ORDER BY e.id
+		LIMIT pagesize OFFSET pagenumber;
+END; 
+$BODY$;
+
+ALTER FUNCTION public.apicall_data(integer, integer, integer, integer)
+    OWNER TO postgres;
+
+
+-- FUNCTION: public.subscriber_data()
+
+-- DROP FUNCTION IF EXISTS public.subscriber_data();
+
+CREATE OR REPLACE FUNCTION public.subscriber_data(
+	)
+    RETURNS TABLE(plan_name character varying, price integer, active_date text, expire_date text, is_active boolean, fullname character varying) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+BEGIN
+    RETURN QUERY 
+SELECT
+        e.plan_name,
+		e.price,
+		TO_CHAR(e.start_date , 'yyyy-mm-dd'),
+		TO_CHAR(e.end_date , 'yyyy-mm-dd'),
+		e.is_active,
+		u.fullname
+    FROM
+        buyplan_master e inner join user_master u on e.user_id=u.id;
+END; 
+$BODY$;
+
+ALTER FUNCTION public.subscriber_data()
+    OWNER TO postgres;

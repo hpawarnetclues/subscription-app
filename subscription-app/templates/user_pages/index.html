@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{%load static%}
+{%load socialaccount%}
+<!-- Coding by CodingLab | www.codinglabweb.com-->
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Authentication </title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="{% static 'css/style.css'%}">
+       
+        <!-- Boxicons CSS -->
+        <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>  
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <link rel="icon" type="image/x-icon" style="mix-blend-mode: multiply;" href="data:image/png;base64,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">
+              
+    </head>
+    <body onload="call_onbody()">
+        <section class="container-fluid forms">
+            <div id="loader" class="loader">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                
+              </div>
+            <div class="form login">
+                <div class="logo p-0">
+                    <img src="{% static 'images/logo.png' %}" alt="Logo" style="max-width:130px">
+                </div>
+                <div class="form-content">
+                    
+                    <header class='mt-3' style="margin-top:10px;">Login</header>
+                    <form>
+                        <div class="field input-field">
+                            <input type="email" placeholder="Email" class="input" id='login_email' onfocusout="textboxerror('login_emailerror','login_email','Please Enter Email.','email')">
+                        </div>
+                        <lable id='login_emailerror' style='display:none;color:red;font-size:0.8rem;'></lable>
+
+                        <div class="field input-field">
+                            <input type="password" placeholder="Password" class="password" id='login_password' onfocusout="textboxerror('login_passworderror','login_password','Please Enter Password.','password')">
+                            <i class='bx bx-hide eye-icon'></i>
+                        </div>
+                        <lable id='login_passworderror' style='display:none;color:red;font-size:0.8rem;'></lable>
+
+                        <div class="form-link">
+                            <a href="/forgot_password" class="forgot-pass">Forgot password?</a>
+                        </div>
+                    </form>
+                    <div class="field button-field">
+                        <button onclick='login_now()'>Login</button>
+                    </div>
+
+                    <div class="form-link">
+                        <span>Don't have an account? <a href="/register_now" class="linkk">Signup</a></span>
+                    </div>
+                </div>
+
+                <div class="line"></div>
+                <div class="media-options">
+                    <form action="{% provider_login_url 'google' %}" method="POST">
+                        {% csrf_token %}
+                    <button type="submit" class="field google">
+                        <img src="{%static 'images/google.png'%}" alt="" class="google-img">
+                        <span>Login with Google</span>
+                    
+                    </button>
+                </form>
+                </div>
+
+            </div>
+
+            
+
+           
+        </section>
+
+        <div class='notification' id='notification'>
+            {% if messages %}
+            
+                {% for message in messages %}
+                {%if forloop.last%}
+                <div  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </div>
+                {%endif%}
+                {% endfor %}
+                
+            {% endif %}
+        </div>
+
+        <!-- JavaScript -->
+        <script src="{% static 'js/script.js' %}"></script>
+    </body>
+</html>

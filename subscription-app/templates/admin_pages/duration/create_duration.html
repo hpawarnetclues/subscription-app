@@ -1,0 +1,33 @@
+{% extends "templates\admin_pages\base.html" %}
+{% block title %}Update Duration{% endblock title %}
+{% load static %}
+{% block content %}
+<div class='createplanmain' style="display:block;">      
+  <div class="content" style="display:block;" id='duration_insert_form'>
+    <div class="title" id="duration_title" style="margin-bottom:20px;">Create</div>  
+    <input type="button" class="btn btn-success" style="margin:0;" value="Back!" onclick="duration_master()">
+    <form action="#" id='duration_create_form'>
+      <div class="user-details">
+        <div class="input-box">
+          <span class="details">Duration Title</span>
+          <input type="text" placeholder="Enter Duration Title" id="durationname_text" onfocusout="textboxerror('durinstname_error','durationname_text','Please Enter Title.')">
+          <lable id='durinstname_error' style="color:red;font-size:18px;display:none;"></lable>
+        </div>
+        <div class="input-box">
+          <span class="details">No. Of Days</span>
+          <input type="text" placeholder="Enter No. of Days" id="durationday_text" oninput="validateNumberInput(event)" onfocusout="textboxerror('durinstday_error','durationday_text','Please Enter No. of Days.')">
+          <lable id='durinstday_error' style="color:red;font-size:18px;display:none;"></lable>
+        </div>
+      </div>
+      <div class="button" id="durcreate_btn">
+        <input type="button" value="Create Now!" onclick="insert_duration()">
+      </div>
+      
+      
+    </form>
+  </div>
+</div>
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/duration.js'%}"></script>
+    {% endblock content %}

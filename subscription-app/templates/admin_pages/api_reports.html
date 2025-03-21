@@ -1,0 +1,99 @@
+{% extends "templates\admin_pages\base.html" %}
+{% load custome_filter %}
+{% block title %}Api Report{% endblock title %}
+{% load static %}
+    <!--Plan display-->
+{% block content %}
+<div class="container mx-auto py-12" id='plan_displaydiv' style="display:block;">
+      
+   
+    <div class="createplanmain" id="plandisplay_table" style="display: block;margin-top:50px;">
+    <div class='row'>
+      <div class='col-10'>
+    <div class="title" style="margin-bottom:20px;">Api Report</div>
+      </div> 
+      <div class='col-12 col-md-2 justify-content-end'>
+        <input type="button" class="btn btn-success" id='pdf_download' value="Pdf Download!" onclick="api_reportmain(0,'pdf')">
+      </div>
+  </div>
+    
+  <div class='row mt-2'>
+  <div class='col-md-3 col-12'>
+    <select class="form-select" onchange="api_reportmain()" id='userdropfiler'>
+      <option value='0'>Select User</option>
+      {% for i in user_lst %}
+      <option value='{{i.id}}'>{{i.fullname}}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class='col-md-3 col-12'>
+    <select class="form-select" onchange="api_reportmain()" id='plandropfiler'>
+      <option value='0'>Select Plan</option>
+      {% for i in plan_lst %}
+      <option value='{{i.id}}'>{{i.plan_name}}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  
+  </div>
+
+  <div class='col-12 m-2'>
+  <table class="table me-2" id='planlimitedtable'>
+    <thead>
+      <tr>
+        <th scope="col">Sr.</th>
+        <th scope="col"><span id='usernameheader' class='user-select-none'>User Name</span></th>
+        <th scope="col"><span id='plannameheader' class='user-select-none'>Plan Name</span></th>
+        <th scope="col"><span class='user-select-none' id='priceheader'>End-Point</span></th>
+        <th scope="col"><span class='user-select-none'  id='activedateheader'>
+          Request Body</span>
+        </th>
+        <th scope="col" >Type</th>
+        <th scope="col" >Code</th>
+        <th scope="col" >Response</th>
+        
+       
+      </tr>
+    </thead>
+
+    <tbody class="table-group-divider"  id='plan_table_body'>
+      
+    </tbody>
+  </table> 
+</div> 
+<div>
+  <div class='row'>
+<div class='col-12 col-md-3'>
+  <select class='form-select' id='selectpagesize' style='width:40%;' onchange="api_reportmain(0,'pagesize')"">
+    <option value='2'>2</option>
+    <option value='5'>5</option>
+    <option value='10'>10</option>
+    <option value='20'>20</option>
+    <option value='30'>30</option>
+    <option value='50'>50</option>
+  </select>
+ 
+</div>
+<div class='col-12 col-md-9'> 
+  <!--pagination start-->
+  <div class='d-flex justify-content-end'>
+  <nav aria-label="Page navigation example" >
+    <ul class="pagination" id='subscriberpagination'>
+
+    </ul>
+  </nav>
+</div>
+</div>
+<!--Pagination end-->
+  </div>  
+</div>
+</div>
+</div>
+<input type="hidden" value="" id='totle_pages'>
+<input type="hidden" value="" id='pagenumber'>
+</div>
+<script src="{% static 'js/subscriber.js'%}"></script>
+<script src="{% static 'js/api_report.js'%}"></script>
+
+{% endblock content %}

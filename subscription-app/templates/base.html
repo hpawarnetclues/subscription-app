@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+{%load static%}
+<!-- Coding by CodingNepal || www.codingnepalweb.com -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Boxicons CSS -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard_style.css'%}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="icon" type="image/x-icon" style="mix-blend-mode: multiply;" href="data:image/png;base64,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">
+  </head>
+  <body>
+    <div class='container-fluid'>
+      <div id="loader" class="loader">
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+      <div class='notification' id='notification'></div>
+      <div class='row' >
+        <input type='hidden' value="{{duration}}" id='durationtextbox'>
+    <!-- navbar -->
+    <nav class="navbar">
+      <div class="logo_item">
+        <i class="bx bx-menu" id="sidebarOpen"></i>
+        <i><lable class='d-inline d-md-none'><img onclick="go_dashboard()" class='logo_img' src="{% static 'images/netclueslogo.png' %}" alt="Logo" style="max-width:80px"></lable></i>
+        <i><lable class='d-none d-md-inline'><img style="max-width:180px" onclick='go_dashboard()' class='logo_img' src="https://cdn.netclues.com/assets/images/netclues-logo.svg" alt="Logo"></lable></i>
+      </div>
+      <div class='d-none d-md-inline'>
+        <div class="topnav">
+          <a class="{% if request.path == '/' %}active{% endif %}" onclick="go_dashboard()"><i class="bx bx-home"></i> Home</a>
+          <a class="{% if request.path == '/subscription-plan' %}active{% endif %}" href="/subscription-plan"><i class="bx bx-window-alt"></i> Pricing</a>
+          <a class="{% if request.path == '/apicall_page' %}active{% endif %}" onclick="Apipage()"><i class="bx bx-aperture"></i> API</a>
+        </div>
+      </div>
+
+      <div class="navbar_content">
+        <i class="bi bi-grid"></i>
+        
+        <span>{{request.session.name}}</span>
+        <div class="dropdown dropstart">
+          <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img class='profile_img' src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=" alt="" class="profile" />
+          </a>
+        
+          <ul class="dropdown-menu">
+            <li><a class="btn border-0" href="/profile"><i class="bx bx-user check-icon bx-sm"></i> <sup>Profile</sup></a></li>
+            <li><a class="btn border-0" onclick="showyourplan()"><i class='bx bx-notepad bx-sm'></i> <sup>My Plan</sup></a></li>
+            <li><a class="btn border-0" onclick="logout()"><i class='bx bx-arrow-from-right bx-sm'></i> <sup>Logout</sup></a></li>
+
+          </ul>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+  <div class='row'>
+   
+    <div class='col-3 p-0 d-inline d-md-none'>
+    <!-- sidebar -->
+    <nav class="sidebar">
+      <div class="menu_content">
+        <ul class="menu_items">
+          <li class="item" style="margin-top:2px;">
+            <div onclick="go_dashboard()" class="nav_link menu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-home"></i>
+              </span>
+              <span class="navlink user-select-none">Home</span>
+              
+              
+            </div>
+          </li>
+          <li class="item" style="margin-top:2px;">
+            <div href="/subscription-plan" class="nav_link menu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-window-alt"></i>
+              </span>
+              <a href="/subscription-plan"><span class="navlink user-select-none">Pricing</span></a>
+              
+              
+            </div>
+          </li>
+          <li class="item">
+            <div href="" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-aperture"></i>
+              </span>
+              <span class='user-select-none' onclick="Apipage()">Api</span>
+            </div>
+          </li>
+        </ul>
+        <!-- Sidebar Open / Close -->
+        
+      </div>
+    </nav>
+  </div>
+  <div class='col-12 col-md-12 p-0' style="margin-top:50px;">
+    {% block content %}{% endblock content %}
+</div>
+
+</div>
+  </div>
+  <script>
+    function confirmation(text){
+      let userConfirmed = confirm(text);
+      if (userConfirmed) {
+          return true;
+      } else {
+          return false;
+      }
+    }
+
+    function logout(){
+      if (confirmation('Are sure want to Logout..?')){
+        window.location.href='/logout';
+      }
+    }
+  </script>

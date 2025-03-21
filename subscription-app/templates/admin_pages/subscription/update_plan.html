@@ -1,0 +1,210 @@
+{% extends "templates/admin_pages/base.html" %}
+{% block title %}Update Subscription{% endblock title %}
+{% load static %}
+{% block content %}
+  <!--Update Plan Form-->
+  <div class='createplanmain' id='updateplan_form' style="display:block;">      
+    <div class="title">Update Plan</div>
+    <input type="button" class="btn btn-success m-2" value="Back!" onclick="plan_master()"> 
+      <div class="content">
+        <input type="hidden" value="{{plans_detail.plan_name}}" id="old_planname">
+        <input type="hidden" value="{{plans_detail.plan_request}}" id="old_planrequest">
+        <input type="hidden" value="{{plans_detail.after_charge}}" id="old_aftercharge">
+        <input type="hidden" value="{{plans_detail.price}}" id="old_price">
+        <input type="hidden" value="{{plans_detail.start_date | date}}" id="old_startdate">
+        <input type="hidden" value="{{plans_detail.end_date | date}}" id="old_enddate">
+        <input type="hidden" value="{{plans_detail.is_unlimited}}" id="old_limited">
+        <input type="hidden" value="{{plans_detail.duration_id}}" id="old_duration">
+        {% if havebuyerinplan%}
+        <lable id='updateplanname_error'  style="color:red;font-size:18px;display:block;">Note :- You have Only Update The End-date because this plan have Active Buyer.</lable>
+        <form action="#" id='insertplan_form'>
+          <input type='hidden' id='update_id' value="{{plans_detail.id}}">
+          <input type="hidden" id="havebuyer" value="yes">
+          <div class="user-details">
+            <div class="input-box">
+              <span class="details">Plan Name</span>
+              <input type="text" placeholder="Enter Plan Name" value="{{plans_detail.plan_name}}" id="planupdate_textname" readonly>
+              <lable id='updateplanname_error'  style="color:red;font-size:18px;display:none;"></lable>
+            </div>
+            <div class="input-box">
+              <span class="details">No. Of Request</span>
+              <input type="number" oninput="validateNumberInput(event)" placeholder="Enter No. of Request" value="{{plans_detail.plan_request}}" id="planupdate_textrequest" readonly>
+              <lable id='updateplanrequest_error' style="color:red;font-size:18px;display:none;"></lable>
+            </div>
+            <div class="input-box">
+              <span class="details">After Per Request Charge</span>
+              <input type="number" oninput="validateNumberInput(event)" value="{{plans_detail.after_charge}}" placeholder="Enter Charge" id="plancharge_text" readonly>
+              <lable id='updateplancharge_error' style="color:red;font-size:18px;display:none;"></lable>
+            </div>
+            <div class="input-box">
+              <span class="details">Price Of Plan</span>
+              <input type="number" oninput="validateNumberInput(event)" placeholder="Enter Price Of Plan" value="{{plans_detail.price}}" id="planupdate_textprice" readonly>
+              <lable id='updateplanprice_error' style="color:red;font-size:18px;display:none"></lable>
+            </div>
+            <div class="input-box" id='updatediv_startdate'>
+              <span class="details">Start Date</span>
+              <input type="date"  id="start_date" value="{{plans_detail.start_date | date:'Y-m-d'}}" readonly>
+              <lable id='updateplanstartdate_error' style="color:red;font-size:18px;display:none"></lable>
+            </div>
+            <div class="input-box">
+              <span class="details">End Date</span>
+              <input type="date"  id="endd_date" onfocus="showcalender('endd_date')" value="{{plans_detail.end_date | date:'Y-m-d'}}" min="{{plans_detail.end_date | date:'Y-m-d'}}" onfocusout="textboxerror('updateplanenddate_error','endd_date', 'End-Date is Required.'); comaprevaluewithold();">
+              <lable id='updateplanenddate_error' style="color:red;font-size:18px;display:none"></lable>
+              <lable id='plandate_error' style="color:red;font-size:18px;display:none"></lable>
+            </div>
+          <div class="input-box">
+            <div class="gender-details">
+              {%if plans_detail.is_unlimited%}
+              <input type="checkbox" name="plan_check" id="plan_check" style="display:none;" disabled checked>
+            
+              <span class="gender-title">Is Unlimited Access</span>
+              <div class="category">
+                <label for="plan_check">
+                <span class="dot one"></span>
+                <span class="gender" >For Unlimited</span>
+              </label>
+              </div>
+              {%else%}
+              <input type="checkbox" name="plan_check" id="plan_check" style="display:none;" disabled>
+            
+              <span class="gender-title">Is Unlimited Access</span>
+              <div class="category">
+                <label for="plan_check">
+                <span class="dot one"></span>
+                <span class="gender">For Unlimited</span>
+              </label>
+              </div>
+              {%endif%}
+              <lable id='updateplanduration_error' style="color:red;font-size:18px;display:none"></lable>
+            </div>
+          </div>
+          <div class="input-box">
+            <div class="select-box">
+              <span class="select-title" >Please Select Duration</span><br>
+              <select id='duration_plan' onchange="change_date()" disabled>
+                {%for i in durations%}
+                {%if i.id == plans_detail.duration_id%}
+                <option value="{{i.id}}" selected>{{i.duration}}</option>
+                {%else%}
+                <option value="{{i.id}}">{{i.duration}}</option>
+                {%endif%}
+                {%endfor%}
+              </select>
+              {%for i in durations%}
+                <input type="hidden" value="{{i.days}}" id="durationdays{{i.id}}"/>
+              {% endfor%}
+              </div>
+            </div>
+          </div>
+          <div class="button">
+            <input type="button" id="updateplanbtn" value="Update Plan !" onclick="plan_update_save()" style="display:none;">
+            <input type="button" id="noupdate" value="Update Plan !" style="cursor:no-drop;background-color:#6b6a6a">
+          </div>
+        </form>
+        {% else%}
+        <form action="#" id='insertplan_form'>
+          <input type='hidden' id='update_id' value="{{plans_detail.id}}">
+          <input type="hidden" id="havebuyer" value="no">
+          <div class="user-details">
+            <div class="input-box">
+              <span class="details">Plan Name</span>
+              <input type="text" placeholder="Enter Plan Name" value="{{plans_detail.plan_name}}" id="planupdate_textname" onfocusout="textboxerror('updateplanname_error','planupdate_textname','Plan Name is Required.'); comaprevaluewithold();">
+              <lable id='updateplanname_error'  style="color:red;font-size:18px;display:none;"></lable>
+            </div>
+            <div class="input-box">
+              <span class="details">No. Of Request</span>
+              <input type="number" oninput="validateNumberInput(event)" placeholder="Enter No. of Request" value="{{plans_detail.plan_request}}" id="planupdate_textrequest" onfocusout="textboxerror('updateplanrequest_error','planupdate_textrequest','Plan Request is Required.','check'); comaprevaluewithold();">
+              <lable id='updateplanrequest_error' style="color:red;font-size:18px;display:none;"></lable>
+            </div>
+            <div class="input-box">
+              <span class="details">After Per Request Charge</span>
+              <input type="number" oninput="validateNumberInput(event)" value="{{plans_detail.after_charge}}" placeholder="Enter Charge" id="plancharge_text" onfocusout="textboxerror('updateplancharge_error','plancharge_text','After Per Charge is Required.','check'); comaprevaluewithold();">
+              <lable id='updateplancharge_error' style="color:red;font-size:18px;display:none;"></lable>
+            </div>
+            <div class="input-box">
+              <span class="details">Price Of Plan</span>
+              <input type="number" oninput="validateNumberInput(event)" placeholder="Enter Price Of Plan" value="{{plans_detail.price}}" id="planupdate_textprice" onfocusout="textboxerror('updateplanprice_error','planupdate_textprice','Plan Price is Required.'); comaprevaluewithold();">
+              <lable id='updateplanprice_error' style="color:red;font-size:18px;display:none"></lable>
+            </div>
+            {% if start_dateupdate%}
+            <div class="input-box" id='updatediv_startdate'>
+              <span class="details">Start Date</span>
+              <input type="date"  id="start_date" onfocus="showcalender('start_date')" onfocusout="checkstart_date = textboxerror('updateplanstartdate_error', 'start_date', 'Start-Date is Required.'); comaprevaluewithold();" value="{{plans_detail.start_date | date:'Y-m-d'}}">
+              <lable id='updateplanstartdate_error' style="color:red;font-size:18px;display:none"></lable>
+            </div>
+            {% else%}
+            <div class="input-box" id='updatediv_startdate'>
+              <span class="details">Start Date</span>
+              <input type="date"  id="start_date" value="{{plans_detail.start_date | date:'Y-m-d'}}" readonly>
+              <lable id='updateplanstartdate_error' style="color:red;font-size:18px;display:none"></lable>
+            </div>
+            {%endif%}
+            <div class="input-box">
+              <span class="details">End Date</span>
+              <input type="date"  id="endd_date" onfocus="showcalender('endd_date')" value="{{plans_detail.end_date | date:'Y-m-d'}}" min="{{mindaterange | date:'Y-m-d'}}" onfocusout="textboxerror('updateplanenddate_error','endd_date', 'End-Date is Required.'); comaprevaluewithold();">
+              <lable id='plandate_error' style="color:red;font-size:18px;display:none"></lable>
+              <lable id='updateplanenddate_error' style="color:red;font-size:18px;display:none"></lable>
+            </div>
+            
+          <div class="input-box">
+          <div class="gender-details">
+            {%if plans_detail.is_unlimited%}
+            <input type="checkbox" name="plan_check" id="plan_check" style="display:none;" onclick="comaprevaluewithold(); textboxerror('updateplanduration_error','planupdate_textrequest','I think You`r Confuse between Unlimited and Limited Plan Please Check Again.','both');" checked>
+          
+            <span class="gender-title">Is Unlimited Access</span>
+            <div class="category">
+              <label for="plan_check">
+              <span class="dot one"></span>
+              <span class="gender">For Unlimited</span>
+            </label>
+            </div>
+            {%else%}
+            <input type="checkbox" name="plan_check" id="plan_check" style="display:none;" onclick="comaprevaluewithold(); textboxerror('updateplanduration_error','planupdate_textrequest','I think You`r Confuse between Unlimited and Limited Plan Please Check Again.','both');">
+          
+            <span class="gender-title">Is Unlimited Access</span>
+            <div class="category">
+              <label for="plan_check">
+              <span class="dot one"></span>
+              <span class="gender">For Unlimited</span>
+            </label>
+            </div>
+            {%endif%}
+            <lable id='updateplanduration_error' style="color:red;font-size:18px;display:none"></lable>
+          </div>
+        </div>
+        <div class="input-box">
+          <div class="select-box">
+            <span class="select-title" >Please Select Duration</span><br>
+            <select id='duration_plan' onchange="change_date() comaprevaluewithold();">
+              {%for i in durations%}
+              {%if i.id == plans_detail.duration_id%}
+              <option value="{{i.id}}" selected>{{i.duration}}</option>
+              {%else%}
+              <option value="{{i.id}}">{{i.duration}}</option>
+              {%endif%}
+              {%endfor%}
+            </div>
+            </select>
+          </div>
+          {%for i in durations%}
+                <input type="hidden" value="{{i.days}}" id="durationdays{{i.id}}"/>
+              {% endfor%}
+        </div>
+        </div>
+          <div class="button">
+            <input type="button" id="updateplanbtn" value="Update Plan !" onclick="plan_update_save()" style="display:none;">
+            <input type="button" id="noupdate" value="Update Plan !" style="cursor:no-drop;background-color:#6b6a6a">
+          </div>
+        </form>
+        {% endif%}
+      </div>
+    </div> 
+</div>
+    <!-- JavaScript -->
+    <script src="{% static 'js/plans.js'%}"></script>
+    <script>
+      window.onload = function(){
+        daterestrict('update')
+      }
+    </script>
+    {% endblock content %}

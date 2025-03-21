@@ -1,0 +1,105 @@
+{% extends "templates/base.html" %}
+{% block title %} My Plans {% endblock title %}
+{% load static %}
+{% block content %}
+{% load custome_filter%}
+<input type="hidden" id="userplanjson" value="{{json_data}}">
+<div class="container mx-auto py-12" id='plan_buy_displaydiv' style="display:block;">
+    <div class="createplanmain" id="plandisplay_table" style="display: block;margin-top:50px;">
+    <div class='row d-flex'>
+          <div class='col-12'>
+            <div class="title" style="margin-bottom:20px;">My Plans</div>
+          </div>  
+        <div class='col-12'>
+          {% if your_plan%}
+            <div class="d-flex justify-content-end">
+              <input class="form-control" id='searchbartext' onkeyup='search()' type="text" placeholder="Search" aria-label="Search" style="width:15rem;">
+            </div>
+          {% endif%}
+        </div>
+      </div>
+    
+      <div class='col-12 m-2'>
+        {% if your_plan%}
+        <table class="table" id='planlimitedtable'>
+            <thead>
+            <tr>
+                <th scope="col">Sr.</th>
+                <th scope="col"><span id='plannameheader' class='user-select-none'>Plan Name</span></th>
+                <th scope="col"><span class='user-select-none' id='priceheader'>Price</span></th>
+                <th scope="col"><span class='user-select-none' id='priceheader'>No. Of Request</span></th>
+                <th scope="col"><span class='user-select-none' id='priceheader'>After Charge</span></th>
+                <th scope="col"><span class='user-select-none'  id='activedateheader'>
+                Active Date</span>
+                </th>
+                <th scope="col" onclick="tablefilter('expiredates')" ><span class='user-select-none' id='expiredateheader'>Expire Date </span>
+                </th>
+                <th scope="col" >Status</th>
+                
+            
+            </tr>
+            </thead>
+            <tbody class="table-group-divider"  id='plan_table_body'>
+                {% for i in your_plan %}
+                <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.plan_name}}</td>
+                <td>{{i.price}}</td>
+                {%if i.is_unlimited%}
+                    <td colspan='2'>Unlimited</td>
+                {% else%}
+                <td>{{i.plan_request}}</td>
+                <td>{{i.after_charge}}</td>
+                {% endif%}
+                <td>{{i.start_date}}</td>
+                <td>{{i.end_date }}</td>
+                {% if i.is_active%}
+                <td>Active</td>
+                {% else%}
+                <td>Expire</td>
+                {% endif%}
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table> 
+        {% else%}
+        <h2 style="color:red;" class="text-3xl font-bold 
+              text-center text-blue-900 mb-6">
+          Now You Don`t Have Any Active Subscription Plan.
+        </h2>
+        {% endif%}
+    </div> 
+    {% if your_plan%}
+    <div class='row'>
+        <div class='col-12 col-md-3'>
+        <select class='form-select' id='selectpagesize' style='width:40%;' onchange='chengepagesize()'>
+            <option value='2'>2</option>
+            <option value='5'>5</option>
+            <option value='10'>10</option>
+            <option value='20'>20</option>
+            <option value='30'>30</option>
+            <option value='50'>50</option>
+        </select>
+        </div>
+        <div class='col-12 col-md-9'> 
+        <!--pagination start-->
+        <div class='d-flex justify-content-end'>
+        <nav aria-label="Page navigation example" >
+            <ul class="pagination" id='myplanpagination'>
+        
+            </ul>
+        </nav>
+        </div>
+        </div>
+    </div>  
+    {% endif%}
+</div>
+</div>   
+  <script src="{% static "js/user_dashboard.js" %}"></script>
+  <script src="{% static "js/myplan.js" %}"></script>
+  <script>
+    window.onload = function(){
+        search()
+    }
+  </script>
+{% endblock content %}

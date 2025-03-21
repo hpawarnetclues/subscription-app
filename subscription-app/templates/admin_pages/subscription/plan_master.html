@@ -1,0 +1,126 @@
+{% extends "templates\admin_pages\base.html" %}
+{% block title %}Subscription{% endblock title %}
+{% load static %}
+    <!--Plan display-->
+    {% block content %}
+    <div class="container mx-auto py-12" id='plan_displaydiv' style="display:block;">
+      
+      <input type='hidden' value="{{json_plan}}" id='alldata'>
+      <input type='hidden' value="{{json_duration}}" id='jsone_duration'>
+      <div class="createplanmain" id="plandisplay_table" style="display: block;margin-top:50px;">
+      <div class='row'>
+        <div class='col-12'>
+      <div class="title" style="margin-bottom:20px;">Subscription</div>
+        </div>  
+    </div>
+      <div class='row'>
+      <div class='d-flex justify-content-end'>
+        <input type="button" class="btn btn-success" value="Add New!" onclick="check_duration()">
+      </div>
+    </div>
+    <div class='row mt-2'>
+      <div class='col-12 col-md-3'>
+      <div class="btn-group d-flex justify-content-start" role="group" aria-label="Basic radio toggle button group">
+        <input type="radio" class="btn-check" name="btnradio" onclick="tablefilter('all')" title="all" id="btnradio1" autocomplete="off" checked>
+        <label class="btn btn-outline-primary" for="btnradio1">All</label>
+      
+        <input type="radio" class="btn-check" name="btnradio" onclick="tablefilter('Unlimited')" title="unlimited" id="btnradio2" autocomplete="off">
+        <label class="btn btn-outline-primary" for="btnradio2">Unlimited</label>
+      
+        <input type="radio" class="btn-check" name="btnradio" onclick="tablefilter('limited')" title="limited" id="btnradio3" autocomplete="off">
+        <label class="btn btn-outline-primary" for="btnradio3">Limited</label>
+      </div>
+    </div>
+    <div class='col-12 col-md-9 mt-1'>
+          <div class="d-flex justify-content-end">
+        <input class="form-control" id='searchbartext' onkeyup='tablefilter()' type="text" placeholder="Search" aria-label="Search" style="width:15rem;">
+      </div>
+    </div>
+    </div>
+  
+    <div class='col-12 m-2'>
+    <table class="table" id='planlimitedtable'>
+      <thead>
+        <tr>
+          <th scope="col">Sr.</th>
+          <th scope="col">Plan Name</th>
+          <th scope="col" >No of Request</th>
+          <th scope="col" >After Charges</th>
+          <th scope="col">Price</th>
+          <th scope="col" >Start Date</th>
+          <th scope="col" >End Date</th>
+          <th scope="col" >Durations</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+
+      <tbody class="table-group-divider"  id='plan_table_body'>
+        {%for i in plans%}
+
+          <tr id='plan{{i.id}}' style="display:'run-in';">
+            <td>{{forloop.counter }}</td>
+            <td id='planname{{i.id}}'>{{i.plan_name}}</td>
+            {%if i.is_unlimited == True%}
+            <td colspan='2' id='planrequest{{i.id}}'>Unlimited</td>
+            {%else%}
+            <td id='planrequest{{i.id}}' >{{i.plan_request}}</td>
+            <td id='planafter{{i.id}}' >{{i.after_charge}}</td>
+            {%endif%}
+            
+            
+            <td id='planprice{{i.id}}'>{{i.price}}</td>
+            <td id='planstart{{i.id}}' >{{i.start_date | date:'Y-m-d'}}</td>
+            <td id='planend{{i.id}}' >{{i.end_date | date:'Y-m-d'}}</td>
+            {% for j in  durations %}
+            {%if i.duration_id == j.id %}
+            <td id='planduration{{i.id}}' >{{j.duration}}</td>
+            {%endif%}
+            {%endfor%}
+            
+            <td><i class="bx bx-edit-alt" title="Edit" onclick="update_plan('{{i.id}}')" style="font-size: 30px!important;"></i><i class="bx bx-trash" title="Delete" style="font-size: 30px!important;margin-left:10px;" onclick="delete_plan('{{i.id}}')"></i></td>
+          </tr>
+          {%if forloop.last%}
+            <input type='hidden' value="{{forloop.counter}}" id='planlast_counter'>
+          {%endif%}
+        {%endfor%}
+        
+      </tbody>
+    </table> 
+  </div> 
+  <div>
+    <div class='row'>
+  <div class='col-12 col-md-3'>
+    <select class='form-select' id='selectpagesize' style='width:40%;' onchange='chengepagesize()'>
+      <option value='2'>2</option>
+      <option value='5'>5</option>
+      <option value='10'>10</option>
+      <option value='20'>20</option>
+      <option value='30'>30</option>
+      <option value='50'>50</option>
+    </select>
+  </div>
+  <div class='col-12 col-md-9'> 
+    <!--pagination start-->
+    <div class='d-flex justify-content-end'>
+    <nav aria-label="Page navigation example" >
+      <ul class="pagination" id='subscriptionpagination'>
+
+      </ul>
+    </nav>
+  </div>
+</div>
+  <!--Pagination end-->
+    </div>  
+  </div>
+</div>
+</div>
+</div>
+    <!-- JavaScript -->
+    <script src="{% static 'js/plans.js'%}"></script>
+    <script>
+      window.onload = function(){
+        li_append()
+        changePage(1)
+      }
+    </script>
+    {% endblock content %}

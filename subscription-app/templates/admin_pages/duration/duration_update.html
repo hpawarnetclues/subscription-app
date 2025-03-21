@@ -1,0 +1,37 @@
+{% extends "templates\admin_pages\base.html" %}
+{% block title %}Update Duration{% endblock title %}
+{% load static %}
+{% block content %}
+<div class='createplanmain' style="display:block;">      
+    
+<div class="content" style="display:block;margin-top:50px;" id='duration_update_form'>
+  <input type="hidden" value="{{duration_detail.duration}}" id="old_title">
+  <input type="hidden" value="{{duration_detail.days}}" id="old_days">
+    <div class="title" style="margin-bottom:20px;">Update </div>
+    
+    <input type="button" class="btn btn-success" style="margin:0;" value="Back!" onclick="duration_master()">
+  <form action="#" id='duration_create_form'>
+    <div class="user-details">
+      <div class="input-box">
+        <span class="details">Duration Title</span>
+        <input type="text" value="{{duration_detail.duration}}" placeholder="Enter Duration Title" id="durupdatename_text" onfocusout="textboxerror('title_error', 'durupdatename_text' ,'Please Ener Title.'); compareold();">
+        <lable id='title_error' style="color:red;font-size:18px;display:none;"></lable>
+      </div>
+      <div class="input-box">
+        <span class="details">No. Of Days</span>
+        <input type="text" value="{{duration_detail.days}}" placeholder="Enter No. of Days" oninput="validateNumberInput(event)" id="durupdateday_text" onfocusout="textboxerror('day_error', 'durupdateday_text' ,'Please Enter Days.'); compareold();">
+        <lable id='day_error' style="color:red;font-size:18px;display:none;"></lable>
+    </div>
+    </div>
+    <input type="hidden" id="durupdateid_text" value="{{duration_detail.id}}">
+    <div class="button" id="durcreate_btn" >
+      <input type="button" value="Update Now!" onclick="Update_duration('update')" id="updatedurationbtn" style="display:none;">
+      <input type="button" value="Update Now!" style="cursor:no-drop;" id="noupdate">
+    </div>
+  </form>
+</div>
+</div>
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/duration.js'%}"></script>
+    {% endblock content %}

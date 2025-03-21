@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Forgot Password</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+        }
+        h1, h2 {
+            color: #333333;
+        }
+        p {
+            color: #555555;
+        }
+        .code {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000000;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p>Netclues Technologies Pvt. Ltd.</p>
+        
+        <h2 style="font-size: 28px; color: #2391f7;">Account Verification Code</h2>
+        <p>This Code Is send for Forgot Password varification and code is valid for 5 minutes</p>
+        <p class="code">Code: {{ verification_code }}</p>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,374 @@
+{% extends "templates\base.html" %}
+{% block title %}Call Api{% endblock title %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/profile_page.css'%}" />
+<div class="container mx-auto py-12" id='plan_buy_displaydiv' style="display:block;">
+    <div class="createplanmain" id="plandisplay_table" style="display: block;margin-top:50px;">
+    <header>Profile Update</header>
+
+    <section>
+        <div class="form first">
+            <div class="details personal">
+                <span class="title">Personal Details</span>
+
+                <div class="fields">
+                    <div class="input-field">
+                        <label>Full Name</label>
+                        <input type="hidden" value="{{name}}" id="org_name">
+                        <input type="text" placeholder="Enter your name" value="{{name}}" id="name">
+                        <lable id='profilename_error' style="color:red;font-size:12px;display:none"></lable>
+                    </div>
+
+                    <div class="input-field">
+                        <label>Date of Birth</label>
+                        <input type="hidden" value="{{dob}}" id="org_dob">
+                        <input type="date" placeholder="Enter birth date" id="dob" value="{{dob}}" >
+                        <lable id='profiledob_error' style="color:red;font-size:12px;display:none"></lable>
+                    </div>
+
+                    <div class="input-field">
+                        <label>Email*</label>
+                        <input type="hidden" value="{{email}}" id="org_email">
+                        <input type="text" placeholder="Enter your email" id="email" value="{{email}}" readonly>
+                    </div>
+
+                    <div class="input-field">
+                        <label>Mobile Number</label>
+                        <input type="hidden" value="{{mobile}}" id="org_mobile">
+                        <input type="text" placeholder="Enter mobile number" id="mobile" value="{{mobile}}" oninput="validateNumberInput(event)" onfocusout="numbercheck('mobile')">
+                        <lable id='profilemobile_error' style="color:red;font-size:12px;display:none"></lable>
+                    </div>
+
+                    <div class="input-field">
+                      <input type="hidden" value="{{gender}}" id="org_gender">
+                        <label>Gender</label>
+                        <select id="gender">
+                            {% if gender == 'male' %}
+                            <option value="male" selected>Male</option>
+                            <option value="female">Female</option>
+                            <option vallue="other">Others</option>
+                            {% elif gender == 'female' %}
+                            <option value="male">Male</option>
+                            <option value="female" selected>Female</option>
+                            <option vallue="other">Others</option>
+                            {% else%}
+                            <option disabled selected value=""> Select gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option vallue="other">Others</option>
+                            {% endif %}
+                        </select>
+                        <lable id='profilegender_error' style="color:red;font-size:12px;display:none"></lable>
+                    </div>
+
+                    <div class="input-field">
+                        <label>Occupation</label>
+                        <input type="hidden" value="{{occupation}}" id="org_occupation">
+                        <input type="text" placeholder="Enter your occupation" value="{{occupation}}" id="occupation">
+                        <lable id='profileoccupation_error' style="color:red;font-size:12px;display:none"></lable>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details family">
+                <span class="title">Family Details</span>
+
+                <div class="fields">
+                    <div class="input-field">
+                        <label>Father Name</label>
+                        <input type="hidden" value="{{fathername}}" id="org_fathername">
+                        <input type="text" placeholder="Enter father name" value="{{fathername}}" id="fathername" >
+                        <lable id='profilefather_error' style="color:red;font-size:12px;display:none"></lable>
+                    </div>
+
+                    <div class="input-field">
+                        <label>Mother Name</label>
+                        <input type="hidden" value="{{mothername}}" id="org_mothername">
+                        <input type="text" placeholder="Enter mother name" value="{{mothername}}" id="mothername">
+                        <lable id='profilemother_error' style="color:red;font-size:12px;display:none"></lable>
+                    </div>
+
+                    <div class="input-field">
+                        <label>Grandfather</label>
+                        <input type="hidden" value="{{grandfathername}}" id="org_grandfathername">
+                        <input type="text" placeholder="Enter grandfther name" value="{{grandfathername}}" id="gradfather">
+                        <lable id='profilegrandfather_error' style="color:red;font-size:12px;display:none"></lable>
+                    </div>
+
+                </div>
+
+
+                <button class="nextBtn" id="nextbtn">
+                    <span class="btnText">Next</span>
+                    <i class="uil uil-navigator"></i>
+                </button>
+            </div> 
+        </div>
+
+        <div class="form second">
+            <div>
+                <span class="title">Why Would You Use It.?</span>
+                <div class="row">
+                  <input type="hidden" value="{{intrestofuser}}" id="org_intrestofuser">
+                <div class="col-12 col-md-6">
+                  {% if 1 in intrestofuser%}
+                  <label class="checkboxlable" style="width:fit-content;">Deploying Application
+                    <input type="checkbox" value="1" onchange="comparebutton()" checked>
+                    <span class="checkmark"></span>
+                  </label>
+                  {% else%}
+                  <label class="checkboxlable" style="width:fit-content;">Deploying Application
+                    <input type="checkbox" value="1" onchange="comparebutton()">
+                    <span class="checkmark"></span>
+                  </label>
+                  {% endif%}
+                  {% if 2 in intrestofuser %}
+                  <label class="checkboxlable" style="width:fit-content;">Hobby Projects
+                    <input type="checkbox" value="2" onchange="comparebutton()" checked>
+                    <span class="checkmark"></span>
+                  </label>
+                  {% else%}
+                  <label class="checkboxlable" style="width:fit-content;">Hobby Projects
+                    <input type="checkbox" onchange="comparebutton()" value="2">
+                    <span class="checkmark"></span>
+                  </label>
+                  {% endif%}
+                  {% if 3 in intrestofuser%}
+                  <label class="checkboxlable" style="width:fit-content;">Local Devlopment
+                    <input type="checkbox" value="3" onchange="comparebutton()" checked>
+                    <span class="checkmark"></span>
+                  </label>
+                  {% else%}
+                  <label class="checkboxlable" style="width:fit-content;">Local Devlopment
+                    <input type="checkbox" onchange="comparebutton()" value="3">
+                    <span class="checkmark"></span>
+                  </label>
+                  {% endif%}
+                  {% if 4 in intrestofuser %}
+                  <label class="checkboxlable" style="width:fit-content;">Data Science
+                    <input type="checkbox" value="4" onchange="comparebutton()" checked>
+                    <span class="checkmark"></span>
+                  </label>
+                  {% else%}
+                  <label class="checkboxlable" style="width:fit-content;">Data Science
+                    <input type="checkbox" value="4" onchange="comparebutton()">
+                    <span class="checkmark"></span>
+                  </label>
+                  {% endif%}
+                  </div>
+                  <div class="col-12 col-md-6">
+                  {% if 5 in intrestofuser%}
+                  <label class="checkboxlable" style="width:fit-content;">For Work
+                    <input type="checkbox" value="5" onchange="comparebutton()" checked>
+                    <span class="checkmark"></span>
+                  </label>
+                  {% else%}
+                  <label class="checkboxlable" style="width:fit-content;">For Work
+                    <input type="checkbox" onchange="comparebutton()" value="5">
+                    <span class="checkmark"></span>
+                  </label>
+                  {% endif%}
+                  {% if 6 in intrestofuser%}
+                  <label class="checkboxlable" style="width:fit-content;">AI/ML
+                    <input type="checkbox" onchange="comparebutton()" value="6" checked>
+                    <span class="checkmark"></span>
+                  </label>
+                  {% else%}
+                  <label class="checkboxlable" style="width:fit-content;">AI/ML
+                    <input type="checkbox" onchange="comparebutton()" value="6">
+                    <span class="checkmark"></span>
+                  </label>
+                  {% endif%}
+                  {% if 7 in intrestofuser%}
+                  <label class="checkboxlable" style="width:fit-content;">Testing Applications
+                    <input type="checkbox" onchange="comparebutton()" value="7" checked>
+                    <span class="checkmark"></span>
+                  </label>
+                  {% else%}
+                  <label class="checkboxlable" style="width:fit-content;">Testing Applications
+                    <input type="checkbox" onchange="comparebutton()" value="7">
+                    <span class="checkmark"></span>
+                  </label>
+                  {% endif%}
+                  {% if 8 in intrestofuser%}
+                  <label class="checkboxlable" style="width:fit-content;">Other
+                    <input type="checkbox" onchange="comparebutton()" value="8" checked>
+                    <span class="checkmark"></span>
+                  </label>
+                  {% else%}
+                  <label class="checkboxlable" style="width:fit-content;">Other
+                    <input type="checkbox" onchange="comparebutton()" value="8">
+                    <span class="checkmark"></span>
+                  </label>
+                  {% endif%}
+                  </div>
+                    <lable id='profilegrandfather_error' style="color:red;font-size:18px;display:none"></lable>
+            </div>
+            <lable id='profileuseofapp_error' style="color:red;font-size:18px;display:none"></lable>
+            </div>
+
+            <div class="details family">
+                <span class="title">What is Your Role ?.</span>
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                      <input type="hidden" value="{{position}}" id="org_position">
+                        {% if position == 'Full-Stack Devloper'%}
+                          <label class="containerradio">Full-Stack Devloper
+                            <input type="radio" name="radio" onclick="comparebutton()" value="Full-Stack Devloper" checked>
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% else%}
+                          <label class="containerradio">Full-Stack Devloper
+                            <input type="radio" name="radio" value="Full-Stack Devloper" onclick="comparebutton()">
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% endif%}
+                          {% if position == 'Back-End Devloper'%}
+                          <label class="containerradio">Back-End Devloper
+                            <input type="radio" name="radio" value="Back-End Devloper" onclick="comparebutton()" checked>
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% else%}
+                          <label class="containerradio">Back-End Devloper
+                            <input type="radio" name="radio" value="Back-End Devloper" onclick="comparebutton()">
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% endif%}
+                          {% if position == 'Front-End Devloper'%}
+                          <label class="containerradio">Front-End Devloper
+                            <input type="radio" name="radio" onclick="comparebutton()" value="Front-End Devloper" checked>
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% else%}
+                          <label class="containerradio">Front-End Devloper
+                            <input type="radio" name="radio" onclick="comparebutton()" value="Front-End Devloper">
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% endif%}
+                          {% if position == 'Data Engineer'%}
+                          <label class="containerradio">Data Engineer
+                            <input type="radio" name="radio" onclick="comparebutton()" value="Data Engineer" checked>
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% else%}
+                          <label class="containerradio">Data Engineer
+                            <input type="radio" name="radio" onclick="comparebutton()" value="Data Engineer">
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% endif%}
+                        </div>
+                        <div class="col-12 col-md-4">
+                          {% if position == 'Software Engineer'%}
+                          <label class="containerradio">Software Engineer
+                            <input type="radio" name="radio" onclick="comparebutton()" value="Software Engineer" checked>
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% else%}
+                          <label class="containerradio">Software Engineer
+                            <input type="radio" name="radio" onclick="comparebutton()" value="Software Engineer">
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% endif%}
+                          {% if position == 'Product Manager'%}
+                          <label class="containerradio">Product Manager
+                            <input type="radio" name="radio" onclick="comparebutton()" value="Product Manager" checked>
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% else%}
+                          <label class="containerradio">Product Manager
+                            <input type="radio" name="radio" onclick="comparebutton()" value="Product Manager">
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% endif%}
+                          {% if position == 'Platform Engineer'%}
+                          <label class="containerradio">Platform Engineer
+                            <input type="radio" name="radio" onclick="comparebutton()" value="Platform Engineer" checked>
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% else%}
+                          <label class="containerradio">Platform Engineer
+                            <input type="radio" name="radio" onclick="comparebutton()" value="Platform Engineer">
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% endif%}
+                          {% if position == 'DevOps Specialist'%}
+                          <label class="containerradio">DevOps Specialist
+                            <input type="radio" name="radio" onclick="comparebutton()" value="DevOps Specialist" checked>
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% else%}
+                          <label class="containerradio">DevOps Specialist
+                            <input type="radio" name="radio" onclick="comparebutton()" value="DevOps Specialist">
+                            <span class="checkmarkredio"></span>
+                          </label>
+                          {% endif%}
+                            </div>
+                            <div class="col-12 col-md-4">
+                              {% if position == 'System Administrator'%}
+                              <label class="containerradio">System Administrator
+                                <input type="radio" name="radio" onclick="comparebutton()" value="System Administrator" checked>
+                                <span class="checkmarkredio"></span>
+                              </label>
+                              {% else%}
+                              <label class="containerradio">System Administrator
+                                <input type="radio" name="radio" onclick="comparebutton()" value="System Administrator">
+                                <span class="checkmarkredio"></span>
+                              </label>
+                              {% endif%}
+                              {% if position == 'Teacher'%}
+                              <label class="containerradio">Teacher
+                                <input type="radio" name="radio" onclick="comparebutton()" value="Teacher" checked>
+                                <span class="checkmarkredio"></span>
+                              </label>
+                              {% else%}
+                              <label class="containerradio">Teacher
+                                <input type="radio" name="radio" onclick="comparebutton()" value="Teacher">
+                                <span class="checkmarkredio"></span>
+                              </label>
+                              {% endif%}
+                              {% if position == 'Student'%}
+                              <label class="containerradio">Student
+                                <input type="radio" name="radio" onclick="comparebutton()" value="Student" checked>
+                                <span class="checkmarkredio"></span>
+                              </label>
+                              {% else%}
+                              <label class="containerradio">Student
+                                <input type="radio" name="radio" onclick="comparebutton()" value="Student">
+                                <span class="checkmarkredio"></span>
+                              </label>
+                              {% endif%}
+                              {% if position == 'Others'%}
+                              <label class="containerradio">Others
+                                <input type="radio" name="radio" onclick="comparebutton()" value="Others" checked>
+                                <span class="checkmarkredio"></span>
+                              </label>
+                              {% else%}
+                              <label class="containerradio">Others
+                                <input type="radio" name="radio" onclick="comparebutton()" value="Others">
+                                <span class="checkmarkredio"></span>
+                              </label>
+                              {% endif%}
+                    </div>
+                </div>
+                <lable id='profilerole_error' style="color:red;font-size:18px;display:none"></lable>
+                <div class="buttons">
+                    <div class="backBtn" id="backbtn">
+                        <i class="uil uil-navigator"></i>
+                        <span class="btnText">Back</span>
+                    </div>
+                   <button style="background-color:#8a8d91;cursor:not-allowed;display:block;" type="button" class="buttontest" id="submitbtntest" disabled>
+                      <span class="btnText">Submit</span>
+                  </button>
+                <button type="button" class="button" onclick="profileupdate()" id="submitbtn" style="display:none;">
+                    <span class="btnText">Submit</span>
+                </button>
+                </div>
+            </div> 
+        </div>
+    </section>
+</div>
+</div>
+<script src="{% static 'js/profile_page.js' %}"></script>
+<script src="{% static 'js/user_dashboard.js' %}"></script>
+{% endblock content%}

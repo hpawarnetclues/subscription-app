@@ -1,0 +1,122 @@
+{% extends "templates\admin_pages\base.html" %}
+{% load custome_filter %}
+{% block title %}Subscriber{% endblock title %}
+{% load static %}
+    <!--Plan display-->
+{% block content %}
+<div class="container mx-auto py-12" id='plan_displaydiv' style="display:block;">
+      
+    <input type='hidden' value="{{json_data}}" id='alldata'>
+    <input type='hidden' value="{{user_json}}" id='json_user'>
+    <div class="createplanmain" id="plandisplay_table" style="display: block;margin-top:50px;">
+    <div class='row'>
+      <div class='col-12'>
+    <div class="title" style="margin-bottom:20px;">Subscriber</div>
+      </div>  
+  </div>
+    
+  <div class='row mt-2'>
+    <div class='col-md-3 col-12sss'>
+      <div class="d-flex justify-content-start">
+        <div class="btn-group d-flex justify-content-start" role="group" aria-label="Basic radio toggle button group">
+          <input type="radio" class="btn-check" name="btnradio" onclick="tablefilter('all')" title="all" id="all" autocomplete="off" checked>
+          <label class="btn btn-outline-primary" for="all">All</label>
+        
+          <input type="radio" class="btn-check" name="btnradio" onclick="tablefilter('active')" title="active" id="Active" autocomplete="off">
+          <label class="btn btn-outline-primary" for="Active">Active</label>
+        
+          <input type="radio" class="btn-check" name="btnradio" onclick="tablefilter('expire')" title="expire" id="Expire" autocomplete="off">
+          <label class="btn btn-outline-primary" for="Expire">Expire</label>
+        </div>
+      </div>
+    </div>
+  <div class='col-md-3 col-12'>
+    <select class="form-select" onchange="tablefilter('dropdown')" id='userdropfiler'>
+      <option>Select User</option>
+      {% for i in user_data%}
+      <option value='{{i.fullname}}'>{{i.fullname}}</option>
+      {% endfor%}
+    </select>
+  </div>
+  <div class='col-md-3 col-12'>
+    <select class="form-select" onchange="tablefilter('dropdown')" id='plandropfiler'>
+      <option>Select Plan</option>
+      {% for i in plans %}
+      <option value='{{i.plan_name}}'>{{i.plan_name}}</option>
+      {% endfor%}
+    </select>
+  </div>
+  <div class='col-md-3 col-12'>
+        <div class="d-flex justify-content-end">
+          <input class="form-control" id='searchbartext' onkeyup='tablefilter()' type="text" placeholder="Search" aria-label="Search" style="width:15rem;">
+        </div>
+  </div>
+  </div>
+
+  <div class='col-12 m-2'>
+  <table class="table" id='planlimitedtable'>
+    <thead>
+      <tr>
+        <th scope="col">Sr.</th>
+        <th scope="col" onclick="tablefilter('username')"><span id='usernameheader' class='user-select-none'>User Name</span></th>
+        <th scope="col" onclick="tablefilter('plan_name')"><span id='plannameheader' class='user-select-none'>Plan Name</span></th>
+        <th scope="col" onclick="tablefilter('price')"><span class='user-select-none' id='priceheader'>Price</span></th>
+        <th scope="col" onclick="tablefilter('activedates')"><span class='user-select-none'  id='activedateheader'>
+          Active Date</span>
+        </th>
+        <th scope="col" onclick="tablefilter('expiredates')" ><span class='user-select-none' id='expiredateheader'>Expire Date </span>
+        </th>
+        <th scope="col" >Status</th>
+        
+       
+      </tr>
+    </thead>
+
+    <tbody class="table-group-divider"  id='plan_table_body'>
+    </tbody>
+  </table> 
+</div> 
+<div>
+  <div class='row'>
+<div class='col-12 col-md-3'>
+  <select class='form-select' id='selectpagesize' style='width:40%;' onchange='chengepagesize()'>
+    <option value='2'>2</option>
+    <option value='5'>5</option>
+    <option value='10'>10</option>
+    <option value='20'>20</option>
+    <option value='30'>30</option>
+    <option value='50'>50</option>
+  </select>
+</div>
+<div class='col-12 col-md-9'> 
+  <!--pagination start-->
+  <div class='d-flex justify-content-end'>
+  <nav aria-label="Page navigation example" >
+    <ul class="pagination" id='subscriberpagination'>
+
+    </ul>
+  </nav>
+</div>
+</div>
+<!--Pagination end-->
+  </div>  
+</div>
+</div>
+</div>
+
+</div>
+<script src="{% static 'js/subscriber.js'%}"></script>
+<script>
+  window.onload = function(){
+    li_append()
+    changePage(1)
+    tablefilter('all')
+    if (window.innerWidth < 768) {
+      console.log('this')
+      sidebar.classList.add("close");
+    } else {
+      sidebar.classList.remove("close");
+    }
+  }
+</script>
+{% endblock content %}

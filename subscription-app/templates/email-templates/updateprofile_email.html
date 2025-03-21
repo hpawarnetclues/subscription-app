@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+        }
+        h1 {
+            color: #333333;
+        }
+        p {
+            color: #555555;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #dddddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hello {{ name }},</h1>
+        <p>This email is sent from Netclues Pvt.Ltd.</p>
+        <p>Your Updated Profile!</p>
+        
+        <table>
+            <tr>
+                <th>Name</th>
+                <td>{{ name }}</td>
+            </tr>
+            <tr>
+                <th>Father Name</th>
+                <td>{{ fathername }}</td>
+            </tr>
+            <tr>
+                <th>Mother Name</th>
+                <td>{{ mothername }}</td>
+            </tr>
+            <tr>
+                <th>Grand-Father Name</th>
+                <td>{{ grandfather }}</td>
+            </tr>
+            <tr>
+                <th>Mobile</th>
+                <td>{{ mobile }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ email }}</td>
+            </tr>
+            <tr>
+                <th>Date Of Birth</th>
+                <td>{{ dob }}</td>
+            </tr>
+            <tr>
+                <th>Gender</th>
+                <td>{{ gender }}</td>
+            </tr>
+            <tr>
+                <th>Occupation</th>
+                <td>{{ occupation }}</td>
+            </tr>
+            <tr>
+                <th>Position</th>
+                <td>{{ position }}</td>
+            </tr>
+        </table>
+        
+        <p>Thank you.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+{%load static%}
+<!-- Coding by CodingNepal || www.codingnepalweb.com -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Boxicons CSS -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard_style.css'%}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+      .createplanmain{
+        margin-top:50px;
+        margin-right:10px;
+        background-color: #fff;
+        padding: 25px 30px;
+        border-radius: 5px;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+      }
+      .title{
+        font-size: 25px;
+        font-weight: 500;
+        position: relative;
+      }
+      .title::before{
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 3px;
+        width: 30px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, #71b7e6, #9b59b6);
+      }
+      .content form .user-details{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: 20px 0 12px 0;
+      }
+      form .user-details .input-box{
+        margin-bottom: 15px;
+        width: calc(100% / 2 - 20px);
+      }
+      form .input-box span.details{
+        display: block;
+        font-weight: 500;
+        margin-bottom: 5px;
+      }
+      .user-details .input-box input{
+        height: 45px;
+        width: 100%;
+        outline: none;
+        font-size: 16px;
+        border-radius: 5px;
+        padding-left: 15px;
+        border: 1px solid #ccc;
+        border-bottom-width: 2px;
+        transition: all 0.3s ease;
+      }
+      .user-details .input-box input:focus,
+      .user-details .input-box input:valid{
+        border-color: #9b59b6;
+      }
+       form .gender-details .gender-title{
+        font-size: 20px;
+        font-weight: 500;
+       }
+       form .category{
+         display: flex;
+         width: 80%;
+         margin: 14px 0 ;
+         justify-content: space-between;
+       }
+       form .category label{
+         display: flex;
+         align-items: center;
+         cursor: pointer;
+       }
+       form .category label .dot{
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        margin-right: 10px;
+        background: #d9d9d9;
+        border: 5px solid transparent;
+        transition: all 0.3s ease;
+      }
+       #plan_check:checked ~ .category label .one,
+       #dot-2:checked ~ .category label .two,
+       #dot-3:checked ~ .category label .three{
+         background: #9b59b6;
+         border-color: #d9d9d9;
+       }
+       form input[type="radio"]{
+         display: none;
+       }
+       form .button{
+         height: 45px;
+         margin: 35px 0
+       }
+       form .button input{
+         height: 100%;
+         width: 100%;
+         border-radius: 5px;
+         border: none;
+         color: #fff;
+         font-size: 18px;
+         font-weight: 500;
+         letter-spacing: 1px;
+         cursor: pointer;
+         transition: all 0.3s ease;
+         background: linear-gradient(135deg, #71b7e6, #9b59b6);
+       }
+       form .button input:hover{
+        /* transform: scale(0.99); */
+        background: linear-gradient(-135deg, #71b7e6, #9b59b6);
+        }
+       @media(max-width: 584px){
+       .container{
+        max-width: 100%;
+      }
+      form .user-details .input-box{
+          margin-bottom: 15px;
+          width: 100%;
+        }
+        form .category{
+          width: 100%;
+        }
+        .content form .user-details{
+          max-height: 300px;
+          overflow-y: scroll;
+        }
+        .user-details::-webkit-scrollbar{
+          width: 5px;
+        }
+        }
+        @media(max-width: 459px){
+        .container .content .category{
+          flex-direction: column;
+        }
+      }
+      .select-box select {
+        height: 100%;
+        width: 25%;
+        outline: none;
+        border: none;
+        color: #707070;
+        font-size: 1rem;
+        margin-top:5px;
+        
+      }
+      form .select-box .select-title{
+        font-size: 20px;
+        font-weight: 500;
+       }
+       .notification {
+        position: fixed;
+        top: 10px;
+        right: 5px;
+        z-index: 9999;
+    }
+      .success {
+          background-color:green;
+          font-size:18px;
+          padding:10px;
+          color:white;
+          height:40px
+      }
+      .error {
+          background-color:red;
+          font-size:18px;
+          padding:10px;
+          color:white;
+          height:40px
+      }
+    </style>
+  </head>
+  <body onload="bodyload('{{duration}}')">
+    <div class='container-fluid'>
+      <div class='notification' id='notification'></div>
+      <div class='row' >
+    <!-- navbar -->
+    <nav class="navbar">
+      <div class="logo_item">
+        <i class="bx bx-menu" id="sidebarOpen"></i>
+        <img src="data:image/png;base64,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" alt="">
+        </i><lable class='d-none d-md-inline'>Take Now</lable>
+      </div>
+
+      <div class="search_bar">
+        <input type="text" placeholder="Search" />
+      </div>
+
+      <div class="navbar_content">
+        <i class="bi bi-grid"></i>
+        <i class='bx bx-sun' id="darkLight"></i>
+        <i class='bx bx-bell' ></i>
+        <div class="dropdown dropstart">
+          <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=" alt="" class="profile" />
+          </a>
+        
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'logout' %}"><i class='bx bx-arrow-from-right bx-sm'></i> <sup>Logout</sup></a></li>
+          </ul>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+  <div class='row'>
+
+    <div class='col-3 p-0'>
+    <!-- sidebar -->
+    <nav class="sidebar">
+      <div class="menu_content">
+        <ul class="menu_items">
+          <li class="item" style="margin-top:2px;">
+            <div onclick="go_dashboard()" class="nav_link menu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-home"></i>
+              </span>
+              <span class="navlink">Dashboard</span>
+              
+            </div>
+
+          <!-- end -->
+
+          <!-- duplicate this li tag if you want to add or remove  navlink with submenu -->
+          <!-- start -->
+        </ul>
+        <!-- Sidebar Open / Close -->
+        
+      </div>
+    </nav>
+  </div>
+  <div class='col-12 col-md-9 p-0' style="margin-top:50px;">
+  <!--Buy Plan form-->
+  <input type='hidden' value="{{duration}}" id='duration'>
+  <div class='createplanmain' id='createplan_form' style="display:block;">
+    <img src="{% static 'images/logo.png' %}" alt="Logo" style="margin-left:40%;max-width:180px;margin-bottom:15px;">
+                   
+  <div class="title">Buy Plan</div>
+    <div class="content">
+      <form action="#">
+        <div class="user-details">
+          <div class="input-box">
+            <span class="details">Plan Name</span>
+            <input type="text" value="{{plan_name}}" id="planname_text" readonly>
+            
+          </div>
+          <div class="input-box">
+            <span class="details">Start Date</span>
+            <input type="date" placeholder="Enter No. of Request" id="satrt_date" onchange="">
+          </div>
+          <div class="input-box">
+            <span class="details">End Date</span>
+            <input type="date" placeholder="Enter Charge" id="end_datee" readonly> 
+          </div>
+          
+          
+        </div>
+        <div class="button">
+          <input type="button" value="Create Now!" onclick="create_plan()">
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  </div>
+  
+  </div>
+</div>
+  </div>
+    <!-- JavaScript -->
+    <script src="{% static 'js/dashboard_script.js'%}"></script>
+    <script>
+      chatSocket = new WebSocket('ws://' + window.location.host + '/ws/subscription/');
+
+        //when soket is connect success
+      chatSocket.onopen = function (e) {
+      console.log("The connection was setup successfully !");
+      };
+
+      chatSocket.onerror = function(error) {
+          alert('something went wrong')
+          window.location.href="/dashbord_page"
+      }
+
+      chatSocket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        
+      }
+
+
+      //when oket is close or disconnect
+      chatSocket.onclose = function (e) {
+          console.log("Something unexpected happened !");
+      };
+      
+
+      function go_dashboard(){
+        window.location.href = "{% url 'dashboard_page'%}"
+        if (window.innerWidth < 768) {
+          console.log('this')
+          sidebar.classList.add("close");
+        } else {
+          sidebar.classList.remove("close");
+        }
+      }
+        function removenotification(url){
+          const notification = document.getElementById('notification');
+          notification.innerHTML=" "
+          if (url){
+              window.location.href=url;
+
+          }
+          
+      }
+
+      function shownotification(type_of_error,message,url){
+          const notification = document.getElementById('notification')
+          const new_div = document.createElement('div')
+          new_div.classList.add(type_of_error)
+          new_div.innerHTML=message
+          notification.appendChild(new_div)
+          setTimeout(() => {
+              removenotification(url)
+          }, 3000);
+      } 
+
+   
+
+      $(window).on( 'load' ,function() {
+        if (window.innerWidth < 768) {
+          console.log('this')
+          sidebar.classList.add("close");
+        } else {
+          sidebar.classList.remove("close");
+        }
+      })
+      function planbuy(duration,plan_id,Plan_name){
+        console.log(duration)
+      }
+      function bodyload(duration){
+        console.log(duration)
+        if (duration == 'Day'){
+            defaultdate(1)
+        }
+        else if(duration == 'Weekly'){
+            console.log('weekly')
+            defaultdate(7)
+        }
+        else if(duration == 'font-night'){
+            defaultdate(15)
+        }
+        else if(duration == 'monthly'){
+            defaultdate(30)
+        }
+        else if(duration == 'Yearly'){
+            defaultdate(365)
+        }
+
+      }
+      
+      
+      function defaultdate(day){
+        console.log(day)
+        newday = day
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+        var today = year + "-" + month + "-" + day;
+        const selectedDate = new Date(today);
+        const newDate = new Date(selectedDate);
+        newDate.setDate(selectedDate.getDate() + newday);
+        // Format date to yyyy-mm-dd
+        const year1 = newDate.getFullYear();
+        const month1 = ('0' + (newDate.getMonth() + 1)).slice(-2);
+        const day1 = ('0' + newDate.getDate()).slice(-2);
+        const formattedDate = `${year1}-${month1}-${day1}`;
+        document.getElementById('satrt_date').value=today;
+        document.getElementById('end_datee').value=formattedDate;
+
+      }
+      
+      
+
+      
+
+      function date_selected(day){
+        const datePicker1 = document.getElementById('satrt_date');
+        const datePicker2 = document.getElementById('end_datee');
+        
+        const selectedDate = new Date(datePicker1.value);
+        const newDate = new Date(selectedDate);
+        newDate.setDate(selectedDate.getDate() + day);
+        // Format date to yyyy-mm-dd
+        const year = newDate.getFullYear();
+        const month = ('0' + (newDate.getMonth() + 1)).slice(-2);
+        const day = ('0' + newDate.getDate()).slice(-2);
+        const formattedDate = `${year}-${month}-${day}`;
+        datePicker2.value = formattedDate;
+
+
+      }
+      
+        
+
+      
+        
+    
+
+    </script>
+  </body>
+</html>

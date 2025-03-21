@@ -1,0 +1,86 @@
+{% extends "templates/admin_pages/base.html" %}
+{% block title %}Duration Master{% endblock title %}
+{% block content %}
+{% load static%}
+    <!--Plan display-->
+    <input type='hidden' value="{{json_data}}" id='alldata'>
+    <div class="container mx-auto py-12" id='plan_displaydiv' style="display:block;">
+  <div class="createplanmain" id="plandisplay_table" style="display: block;margin-top:50px;">
+    <div class='row'>
+      <div class='col-12'>
+      <div class="title" style="margin-bottom:20px;">Duration</div>
+      </div>
+    </div>
+  
+  <div class='row'>
+    <div class='col-12'>
+      <div class='d-flex justify-content-end'>
+        <input type="button" class="btn btn-success" value="Add New!" onclick="duration_create()">
+      </div>
+    </div>
+      </div>
+      <div class='row mt-2'>
+      <div class='col-12'>
+      <div class="d-flex justify-content-end">
+        <input class="form-control" id='searchbartext' onkeyup='serchdurationmaster()' type="text" placeholder="Search" aria-label="Search" style="width:18rem;">
+      </div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-12'>
+      <table class="table" id='durationtable'>
+        <thead>
+          <tr>
+            <th scope="col">Sr.</th>
+            <th scope="col">Title</th>
+            <th scope="col">No. of Days</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider" id='duration_table_body'>
+          {%for i in durations%}
+          <tr id='delete{{i.id}}'>
+            <th>{{forloop.counter }}</th>
+            <td id='durtitle_td{{i.id}}'>{{i.duration}}</td>
+            <td id='durdays_td{{i.id}}'>{{i.days}}</td>
+            <td><i class="bx bx-edit-alt" title="Edit" onclick="update_dur('{{i.id}}','update')" style="font-size: 30px!important;"></i><i class="bx bx-trash" title="Delete" style="font-size: 30px!important;margin-left:10px;" onclick="update_dur('{{i.id}}','delete')"></i></td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table> 
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-12 col-md-3'>
+      <select class='form-select' id='selectpagesize' style='width:40%;' onchange='chengepagesize()'>
+        <option value='2'>2</option>
+        <option value='5'>5</option>
+        <option value='10'>10</option>
+        <option value='20'>20</option>
+        <option value='30'>30</option>
+        <option value='50'>50</option>
+      </select>
+    </div>
+    <div class='col-12 col-md-9'>
+      <!--pagination start-->
+    <div class='d-flex justify-content-end'>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination" id='durationpagination'>
+  
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    <!--Pagination end-->
+    </div>  
+  </div>
+ 
+</div>
+<script src="{% static 'js/duration.js'%}"></script>
+<script>
+  window.onload = function(){
+    changePage(1)
+  }
+</script>
+    {% endblock content %}
